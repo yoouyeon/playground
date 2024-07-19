@@ -1,4 +1,3 @@
-"use client";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Text } from "@chakra-ui/react";
 import { css } from "@emotion/react";
@@ -7,7 +6,6 @@ import { Calendar as ReactCalendar } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 type ValuePiece = Date | null;
-
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export const CalendarWrapper = css`
@@ -60,8 +58,12 @@ export const CalendarWrapper = css`
   }
 `;
 
-const Calendar = () => {
-  const [value, onChange] = useState<Value>(new Date());
+type CalendarProps = {
+  value: Value;
+  onChange: (value: Value) => void;
+};
+
+const Calendar = ({ value, onChange }: CalendarProps) => {
   return (
     <Box css={CalendarWrapper}>
       <ReactCalendar

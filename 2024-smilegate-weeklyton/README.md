@@ -22,4 +22,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Check List
 
 - [x] 캘린더 커스텀 가능 여부
-- [ ] 캘린더 날짜 선택 가능 여부
+- [x] 캘린더 날짜 선택 가능 여부
