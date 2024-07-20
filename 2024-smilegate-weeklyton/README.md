@@ -34,12 +34,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - [x] 아이콘 (chakra-ui-icons은 지원하는 아이콘 수가 많지 않음)
   - [x] 텍스트
   - [x] 알림 아이콘
-  - [ ] drawer (사이드 메뉴)
-  - [ ] modal (모달)
+  - [x] drawer (사이드 메뉴)
   - [x] 알림 표시할 수 있을 컴포넌트
-  - [ ] 드롭다운
+  - [x] 드롭다운
   - [ ] 날짜 선택
   - [ ] Textarea
-  - [ ] 텍스트 꾸미기 (글씨체 / 폰트 / 색상 / 크기 / weight)
+  - [x] 텍스트 꾸미기 (폰트 / 색상 / 크기 / weight) => 일괄 적용만 가능할 것 같음
   - [ ] 토글
 - [ ] 편지 이미지 생성 방법 확인

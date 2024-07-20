@@ -3,6 +3,7 @@ import Link from "next/link";
 import ButtonTest from "./buttonTest";
 import TextTest from "./textText";
 import NotiTest from "./notiTest";
+import DrawerTest from "./drawerTest";
 
 const ComponentHome = () => {
   return (
@@ -13,6 +14,7 @@ const ComponentHome = () => {
       <ButtonTest />
       <TextTest />
       <NotiTest />
+      <DrawerTest />
     </VStack>
   );
 };
