@@ -29,3 +29,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] diff 내에서 데이터 조작 가능 여부
   - [ ] jsdiff
   - [ ] ~~diff-match-patch~~
+- [ ] chakra-ui / 필요한 컴포넌트 구현 가능 여부 확인
+  - [ ] 버튼
+  - [ ] 아이콘
+  - [ ] 텍스트
+  - [ ] 알림 아이콘
+  - [ ] drawer (사이드 메뉴)
+  - [ ] modal (모달)
+  - [ ] 알림 표시할 수 있을 컴포넌트
+  - [ ] 드롭다운
+  - [ ] 툴팁
+  - [ ] 날짜 선택
+  - [ ] Textarea
+  - [ ] 텍스트 꾸미기 (글씨체 / 폰트 / 색상 / 크기 / weight)
+  - [ ] 토글
+- [ ] 편지 이미지 생성 방법 확인
