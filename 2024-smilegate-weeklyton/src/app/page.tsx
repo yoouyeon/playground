@@ -13,6 +13,9 @@ export default function Home() {
       <Button size="lg">
         <Link href="/diff">Diff</Link>
       </Button>
+      <Button size="lg">
+        <Link href="/component">Component</Link>
+      </Button>
     </VStack>
   );
 }

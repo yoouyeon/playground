@@ -30,8 +30,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - [ ] jsdiff
   - [ ] ~~diff-match-patch~~
 - [ ] chakra-ui / 필요한 컴포넌트 구현 가능 여부 확인
-  - [ ] 버튼
-  - [ ] 아이콘
+  - [x] 버튼
+  - [x] 아이콘 (chakra-ui-icons은 지원하는 아이콘 수가 많지 않음)
   - [ ] 텍스트
   - [ ] 알림 아이콘
   - [ ] drawer (사이드 메뉴)
