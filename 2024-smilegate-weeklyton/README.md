@@ -25,7 +25,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] 캘린더 날짜 선택 가능 여부
 - [ ] diff view 커스텀 가능 여부
   - [x] jsdiff
-  - [ ] diff-match-patch
+  - [ ] ~~diff-match-patch~~ : 정확히 단어 단위로 diff 확인 불가능해보임
 - [ ] diff 내에서 데이터 조작 가능 여부
   - [ ] jsdiff
-  - [ ] diff-match-patch
+  - [ ] ~~diff-match-patch~~
