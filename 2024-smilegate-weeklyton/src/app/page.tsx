@@ -16,6 +16,9 @@ export default function Home() {
       <Button size="lg">
         <Link href="/component">Component</Link>
       </Button>
+      <Button size="lg">
+        <Link href="/generateImage">Generate Image</Link>
+      </Button>
     </VStack>
   );
 }
