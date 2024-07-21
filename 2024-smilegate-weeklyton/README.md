@@ -37,10 +37,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - [x] drawer (사이드 메뉴)
   - [x] 알림 표시할 수 있을 컴포넌트
   - [x] 드롭다운
-  - [ ] 날짜 선택
-  - [ ] Textarea
+  - [x] 날짜 선택
+  - [x] Editable 컴포넌트 확인
   - [x] 텍스트 꾸미기 (폰트 / 색상 / 크기 / weight) => 일괄 적용만 가능할 것 같음
-  - [ ] 토글
 - [x] 편지 이미지 생성 [react-to-image](https://github.com/hugocxl/react-to-image)
   - [x] 이미지 변환 가능 (png, jpeg, blob)
   - [x] 이미지 미리보기

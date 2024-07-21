@@ -4,6 +4,7 @@ import ButtonTest from "./buttonTest";
 import TextTest from "./textText";
 import NotiTest from "./notiTest";
 import DrawerTest from "./drawerTest";
+import InputTest from "./inputText";
 
 const ComponentHome = () => {
   return (
@@ -15,6 +16,7 @@ const ComponentHome = () => {
       <TextTest />
       <NotiTest />
       <DrawerTest />
+      <InputTest />
     </VStack>
   );
 };
