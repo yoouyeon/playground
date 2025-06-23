@@ -1,0 +1,26 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.card {
+  padding: 2em;
+}
+
+/* https://developers.kakao.com/docs/latest/ko/kakaologin/design-guide */
+.kakao-login-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #fee500;
+  border: none;
+  border-radius: 12px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 1.125rem;
+  img {
+    height: 1.25rem;
+  }
+}

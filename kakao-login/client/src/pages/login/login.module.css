@@ -1,0 +1,15 @@
+/* https://developers.kakao.com/docs/latest/ko/kakaologin/design-guide */
+.kakaoLoginButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #fee500;
+  border: none;
+  border-radius: 12px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 1.125rem;
+  img {
+    height: 1.25rem;
+  }
+}
