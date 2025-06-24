@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Res,
-  HttpException,
-  HttpStatus,
-  Logger,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Post, Query, Res, Logger, Req } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
@@ -89,13 +80,41 @@ export class AuthController {
     }
   }
 
-  // 로그아웃: GET /auth/logout
-  @Get('logout')
-  logout(@Res() res: Response) {
+  // 로그아웃: POST /auth/logout
+  @Post('logout')
+  async logoutPost(@Req() req: Request, @Res() res: Response) {
     try {
-      this.logger.log('로그아웃 요청');
+      this.logger.log('로그아웃 요청 시작');
 
-      // 쿠키 삭제
+      // 1단계: 서비스 액세스 토큰에서 사용자 ID 추출
+      const accessToken = req.cookies?.accessToken as string;
+      let userId: string | null = null;
+
+      if (accessToken) {
+        try {
+          // JWT 토큰 검증 및 사용자 ID 추출
+          const payload = this.jwtService.verify<{ sub: string }>(accessToken);
+          userId = payload?.sub;
+
+          if (userId) {
+            // 2단계: 카카오 로그아웃 API 호출 (서비스 앱 어드민 키 방식)
+            this.logger.log(
+              `카카오 로그아웃 API 호출 시작: 사용자 ID ${userId}`,
+            );
+            await this.authService.logoutFromKakao(userId);
+          }
+        } catch (jwtError) {
+          this.logger.warn(
+            'JWT 토큰 검증 실패, 카카오 로그아웃 건너뜀:',
+            jwtError,
+          );
+        }
+      } else {
+        this.logger.log('액세스 토큰이 없어 카카오 로그아웃 건너뜀');
+      }
+
+      // 3단계: 서비스 쿠키 삭제
+      this.logger.log('서비스 쿠키 삭제');
       res.clearCookie('accessToken', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -110,14 +129,31 @@ export class AuthController {
         path: '/',
       });
 
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      return res.redirect(`${frontendUrl}/login`);
+      // 4단계: 성공 응답 반환
+      this.logger.log('로그아웃 성공');
+      return res.status(200).json({
+        message: '로그아웃 성공',
+      });
     } catch (error) {
       this.logger.error('로그아웃 처리 중 에러:', error);
-      throw new HttpException(
-        '로그아웃 실패',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+
+      // 에러가 발생해도 쿠키는 삭제
+      res.clearCookie('accessToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+      });
+
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+      });
+
+      // 성공 응답 반환
+      return res.status(200).json();
     }
   }
 

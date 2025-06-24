@@ -144,7 +144,6 @@ export class AuthService {
   // 사용자 등록/로그인 처리
   processUser(kakaoUser: KakaoUserInfo): User {
     try {
-      console.log('🔍 사용자 정보:', kakaoUser);
       const kakaoId = kakaoUser.id.toString();
       const nickname =
         kakaoUser.properties?.nickname ||
@@ -223,5 +222,44 @@ export class AuthService {
   // 디버깅용: 특정 사용자 조회
   getUserById(id: string): User | undefined {
     return users.get(id);
+  }
+
+  // 카카오 로그아웃 API 호출 (서비스 앱 어드민 키 방식)
+  async logoutFromKakao(userId: string): Promise<void> {
+    try {
+      await axios.post(
+        'https://kapi.kakao.com/v1/user/logout',
+        {
+          target_id_type: 'user_id',
+          target_id: userId,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            Authorization: `KakaoAK ${process.env.KAKAO_ADMIN_KEY}`,
+          },
+          timeout: 10000,
+        },
+      );
+
+      this.logger.log('✅ 카카오 로그아웃 성공');
+    } catch (error) {
+      this.logger.error('❌ 카카오 로그아웃 실패');
+
+      if (error instanceof AxiosError) {
+        this.logger.error('카카오 API 에러:', error.response?.data);
+
+        // 사용자가 이미 로그아웃된 경우는 무시
+        if (error.response?.status === 400) {
+          this.logger.log('사용자가 이미 로그아웃되어 처리 완료');
+          return;
+        }
+      }
+
+      // 카카오 로그아웃 실패해도 서비스 로그아웃은 계속 진행
+      this.logger.warn(
+        '카카오 로그아웃 실패했지만 서비스 로그아웃은 계속 진행합니다',
+      );
+    }
   }
 }
