@@ -1,0 +1,22 @@
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.welcomeContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.welcomeAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.welcomeText {
+  font-size: 1.5rem;
+}

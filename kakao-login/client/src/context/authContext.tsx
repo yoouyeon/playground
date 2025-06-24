@@ -5,7 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import apiClient from "../api";
+import userApi from "../api/userApi";
 
 interface User {
   id: string;
@@ -16,6 +16,7 @@ interface User {
 interface AuthContextType {
   isAuthenticated: boolean;
   user?: User;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -27,7 +28,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await apiClient.get("/auth/user");
+        const response = await userApi.getUser();
         if (response.data) {
           setIsAuthenticated(true);
           setUser(response.data);
@@ -43,11 +44,21 @@ function AuthProvider({ children }: { children: ReactNode }) {
     getUser();
   }, []);
 
+  const logout = async () => {
+    try {
+      await userApi.logout();
+    } finally {
+      setIsAuthenticated(false);
+      setUser(undefined);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
         user,
+        logout,
       }}
     >
       {children}
