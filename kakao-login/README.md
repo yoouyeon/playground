@@ -2,6 +2,11 @@
 
 카카오 로그인 기능 확인을 위한 연습용 프로젝트입니다.
 
+임시 배포 URL
+
+- 클라이언트: https://playground-two.vercel.app
+- 서버: https://playground-kakao-login.up.railway.app
+
 ## 프로젝트 구성
 
 ```
