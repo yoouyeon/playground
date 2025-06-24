@@ -168,7 +168,7 @@ export class AuthController {
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true, // JavaScript 접근 차단 (XSS 방지)
       secure: isProduction, // HTTPS에서만 전송 (배포시)
-      sameSite: 'lax', // CSRF 방지
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
       path: '/', // 모든 경로에서 사용
     });
@@ -177,7 +177,7 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'lax',
+      sameSite: 'none',
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30일
       path: '/',
     });
