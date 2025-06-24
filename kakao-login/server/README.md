@@ -1,101 +1,143 @@
-> [!IMPORTANT]  
-> [Claude](https://claude.ai/)로 작성된 Kakao 로그인 테스트용 서버입니다. 보안상 허점이 있을 수 있습니다.
+# 카카오 로그인 서버
 
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+> [!WARNING]  
+> [Claude](https://claude.ai/)로 작성된 카카오 로그인 테스트용 서버입니다. 보안상 문제가 있을 수 있습니다.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 실행시키기
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+### 1. 의존성 설치
 
 ```bash
-$ yarn install
+yarn install
 ```
 
-## Compile and run the project
+### 2. 환경변수 설정
+
+프로젝트 root에 `.env` 파일을 생성하고 아래 내용을 추가해주세요.
+
+```env
+# 1. 환경 설정
+NODE_ENV=development
+
+# 2. 카카오 API 설정 (모두 필수)
+KAKAO_CLIENT_ID=your_kakao_client_id
+KAKAO_CLIENT_SECRET=your_kakao_client_secret
+KAKAO_REDIRECT_URI=http://localhost:3001/auth/kakao/callback
+KAKAO_ADMIN_KEY=your_kakao_admin_key
+
+# 3. JWT 보안 설정 (필수)
+JWT_SECRET=your_very_secure_jwt_secret_key
+
+# 4. 서버 설정
+PORT=3001
+FRONTEND_URL=http://localhost:5173
+```
+
+### 3. 개발 서버 실행
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+yarn start:dev
 ```
 
-## Run tests
+## 테스트한 내용
 
-```bash
-# unit tests
-$ yarn run test
+- **카카오 로그인/로그아웃 플로우**
+- **액세스 토큰과 리프레시 토큰 생성과 검증**
+- **쿠키를 활용한 토큰 관리**: HttpOnly, Secure 쿠키
+- **CORS 설정**
+- **간단한 인메모리 사용자 데이터 관리**
 
-# e2e tests
-$ yarn run test:e2e
+## 프로젝트 구조
 
-# test coverage
-$ yarn run test:cov
+```
+src/
+├── app.controller.ts         # 기본 컨트롤러
+├── app.module.ts             # 메인 애플리케이션 모듈
+├── app.service.ts            # 기본 서비스
+├── auth.controller.ts        # 인증 관련 엔드포인트
+├── auth.service.ts           # 인증 비즈니스 로직
+└── main.ts                   # 애플리케이션 진입점
 ```
 
-## Deployment
+## 로그인 플로우
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+```mermaid
+---
+config:
+  look: handDrawn
+  theme: neutral
+---
+sequenceDiagram
+    participant User as 사용자
+    participant Client as 서비스 클라이언트
+    participant Server as 서비스 서버
+    participant Kakao as 카카오 API 서버
+    rect rgb(255,235,235)
+    Note over User, Kakao: 카카오 인가 코드 받기
+    User ->> Client : 카카오 로그인 버튼 클릭
+    activate User
+    activate Client
+    Client ->> Kakao : 인가 코드 받기 요청
+    deactivate Client
+    activate Kakao
+    Note over Client,Kakao: GET https://kauth.kakao.com/oauth/authorize
+    Kakao ->> Client : 카카오계정 로그인 요청
+    Client ->> Kakao : 카카오계정 로그인
+    Kakao ->> Server : 인가 코드와 함께 리다이렉트
+    deactivate Kakao
+    activate Server
+    Note over Server,Kakao: GET /auth/kakao/callback?code=인가코드
+    end
+    rect rgb(255,243,205)
+    Note over User, Kakao: 카카오 토큰 받기
+    Server ->> Kakao: 인가 코드로 토큰 요청
+    activate Kakao
+    Kakao ->> Server: 토큰 발급
+    deactivate Kakao
+    end
+    rect rgb(212,237,218)
+    Note over User, Kakao: 서비스 로그인/회원가입
+    Server ->> Kakao: 사용자 정보 요청
+    activate Kakao
+    Note over Server, Kakao: GET https://kapi.kakao.com/v2/user/me
+    Kakao ->> Server: 사용자 정보
+    deactivate Kakao
+    Server ->> Server: 서비스 회원가입 OR 로그인
+    Server ->> Server: 쿠키에 토큰 설정
+    Server ->> Client: 홈으로 리다이렉트
+    activate Client
+    deactivate Server
+    end
+    rect rgb(235,245,255)
+    Note over User, Kakao: 로그인 Context 설정
+    Client ->> Server: 사용자 정보 API 호출
+    activate Server
+    Note Over Client, Server: GET /auth/user
+    Server ->> Client: 사용자 정보 반환
+    deactivate Server
+    Client ->> Client: 인증 상태 업데이트
+    Client ->> User: 홈 화면 이동
+    deactivate Client
+    deactivate User
+    end
+    rect rgb(230,230,255)
+    Note over User, Kakao: 로그아웃
+    User ->> Client : 로그아웃 버튼 클릭
+    activate User
+    activate Client
+    Client ->> Server: 로그아웃 API 호출
+    activate Server
+    Note over Client, Server: POST /auth/logout
+    Server ->> Kakao: 카카오 로그아웃
+    activate Kakao
+    Note over Server, Kakao: POST https://kapi.kakao.com/v1/user/logout
+    Kakao ->> Server: 카카오 토큰 만료
+    deactivate Kakao
+    Server ->> Server: 서비스 토큰 만료/쿠키 삭제
+    Server ->> Client: 로그아웃
+    deactivate Server
+    Client ->> User : 로그인 페이지로 이동
+    deactivate Client
+    deactivate User
+    end
 ```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
