@@ -115,19 +115,7 @@ export class AuthController {
 
       // 3단계: 서비스 쿠키 삭제
       this.logger.log('서비스 쿠키 삭제');
-      res.clearCookie('accessToken', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-      });
-
-      res.clearCookie('refreshToken', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-      });
+      this.clearSecureCookies(res);
 
       // 4단계: 성공 응답 반환
       this.logger.log('로그아웃 성공');
@@ -138,19 +126,7 @@ export class AuthController {
       this.logger.error('로그아웃 처리 중 에러:', error);
 
       // 에러가 발생해도 쿠키는 삭제
-      res.clearCookie('accessToken', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-      });
-
-      res.clearCookie('refreshToken', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-      });
+      this.clearSecureCookies(res);
 
       // 성공 응답 반환
       return res.status(200).json();
@@ -168,7 +144,7 @@ export class AuthController {
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true, // JavaScript 접근 차단 (XSS 방지)
       secure: isProduction, // HTTPS에서만 전송 (배포시)
-      sameSite: 'none',
+      sameSite: isProduction ? 'none' : 'lax', // 배포시 CSRF 방지
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
       path: '/', // 모든 경로에서 사용
     });
@@ -177,8 +153,26 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'none',
+      sameSite: isProduction ? 'none' : 'lax', // 배포시 CSRF 방지
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30일
+      path: '/',
+    });
+  }
+
+  private clearSecureCookies(res: Response) {
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
+      path: '/',
+    });
+
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
       path: '/',
     });
   }
